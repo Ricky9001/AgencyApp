@@ -1,6 +1,4 @@
 # Agency App 
-MediConcen code test \
-Applicant: Law Wai Kit (Ricky) 
 
 
 ## Information
