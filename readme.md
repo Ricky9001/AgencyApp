@@ -1,6 +1,6 @@
-# Clinic App 
+# Agency App 
 MediConcen code test \
-Applicant: Chan Cheuk Fung (Max) 
+Applicant: Law Wai Kit (Ricky) 
 
 
 ## Information
@@ -12,5 +12,5 @@ Please follow the order of the scripts to run on the database.
 ```
 1_Create DataBase and dbuser.sql
 2_Create Table - Users.sql
-3_Create Table - ConRecord.sql
+3_Create Table - Interview.sql
 ```

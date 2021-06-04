@@ -2,26 +2,25 @@ import React, { useState } from 'react'
 import { Container, Form, Header, Input, Title, Item, Button, Label, Card, CardItem, CheckBox, Body } from 'native-base';
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import DateTimeHelper from '../helper/DateTimeHelper'
-export default function ConRecordCard(props) {
+export default function InterviewCard(props) {
     const [showDetail, setshowDetail] = useState(false)
-    const jsdate = new Date(props.detail.con_datetime)
+    const intdate = new Date(props.detail.interview_date)
     return (
         <Card style={styles.CardWrapper}>
             <CardItem button onPress={() => setshowDetail(!showDetail)}>
-                <Text> Consultation on {DateTimeHelper.formatDateTime(jsdate, 'date')} {DateTimeHelper.formatDateTime(jsdate, 'time')}</Text>
+                <Text> Interview on {DateTimeHelper.formatDateTime(intdate, 'date')} {DateTimeHelper.formatDateTime(intdate, 'time')}</Text>
             </CardItem>
             {
                 showDetail &&
                 <CardItem cardBody style={styles.cardBody} >
                     <Body >
-                        <Text>Doctor: {props.detail.doctor}</Text>
-                        <Text>Patient: {props.detail.patient}</Text>
-                        <Text>Diagnosis: {props.detail.diagnosis}</Text>
-                        <Text>Medication: {props.detail.medication}</Text>
-                        <Text>Consultation Fee: {props.detail.fee}</Text>
-                        <Text>Consultation Date: {DateTimeHelper.formatDateTime(jsdate, 'date')}</Text>
-                        <Text>Consultation Time: {DateTimeHelper.formatDateTime(jsdate, 'time')}</Text>
-                        <Text>Follow Up: {(props.detail.follow_up == 'Y') ? "Yes" : "No"}</Text>
+                        <Text>Company: {props.detail.company}</Text>
+                        <Text>Interviewer: {props.detail.interviewer}</Text>
+                        <Text>Interviewee: {props.detail.interviewee}</Text>
+                        <Text>Job Title: {props.detail.jobtitle}</Text>
+                        <Text>Expected Salary: {props.detail.salary}</Text>
+                        <Text>Interview Date: {DateTimeHelper.formatDateTime(intdate, 'date')}</Text>
+                        <Text>Interview Time: {DateTimeHelper.formatDateTime(intdate, 'time')}</Text>
                     </Body>
                 </CardItem>
             }

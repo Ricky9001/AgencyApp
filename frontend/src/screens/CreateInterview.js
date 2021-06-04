@@ -3,30 +3,28 @@ import { StyleSheet, Text, TouchableOpacity, View, ScrollView } from 'react-nati
 import { Container, Form, Header, Input, Title, Item, Button, Label, CheckBox, ListItem, Body, Left, Right } from 'native-base';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 import DateTimeHelper from "../helper/DateTimeHelper";
-import ConRecordService from "../services/ConRecordService";
+import InterviewService from "../services/InterviewService";
 
-export default function CreateConRecord({ navigation }) {
-    const [doctor, setdoctor] = useState('');
-    const [patient, setpatient] = useState('')
-    const [diagnosis, setdiagnosis] = useState('')
-    const [medication, setmedication] = useState('')
-    const [fee, setfee] = useState('')
+export default function CreateInterview({ navigation }) {
+    const [company, setcompany] = useState('');
+    const [interviewer, setinterviewer] = useState('')
+    const [interviewee, setinterviewee] = useState('')
+    const [jobtitle, setjobtitle] = useState('')
+    const [salary, setsalary] = useState('')
     const [date, setdate] = useState(null)
     const [time, settime] = useState(null)
     const [displayDate, setdisplayDate] = useState('')
     const [displayTime, setdisplayTime] = useState('')
     const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
     const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-    const [followup, setfollowup] = useState(false)
     const [warning, setwarning] = useState(null);
 
     const SubmitAction = async () => {
         if (validateInput()) {
-            let con_datetime = DateTimeHelper.ParseDateTimeToSQL(date, time);
-            let follow_up = followup ? 'Y' : 'N'
-            const data = { doctor, patient, diagnosis, medication, fee, con_datetime, follow_up }
+            let interview_date = DateTimeHelper.ParseDateTimeToSQL(date, time);
+            const data = { company, interviewer, interviewee, jobtitle, salary, interview_date }
 
-            const result = await ConRecordService.Create(data);
+            const result = await InterviewService.Create(data);
 
             if (result.success) {
                 alert('Record is created!')
@@ -43,16 +41,15 @@ export default function CreateConRecord({ navigation }) {
         }
     }
     const resetState = () => {
-        setdoctor('')
-        setpatient('')
-        setdiagnosis('')
-        setmedication('')
-        setfee('')
+        setcompany('')
+        setinterviewer('')
+        setinterviewee('')
+        setjobtitle('')
+        setsalary('')
         setdate(null)
         settime(null)
         setdisplayDate('')
         setdisplayTime('')
-        setfollowup(false)
         setwarning(null)
     }
 
@@ -97,30 +94,33 @@ export default function CreateConRecord({ navigation }) {
     };
 
     const validateInput = () => {
-        if (!doctor) {
-            setwarning('Doctor is empty!')
+        if (!company) {
+            setwarning('Company is empty!')
         }
-        else if (!patient) {
-            setwarning('Patient is empty!')
+        else if (!interviewer) {
+            setwarning('Interviewer is empty!')
         }
-        else if (!medication) {
-            setwarning('Medication is empty!')
+        else if (!interviewee) {
+            setwarning('Interviewee is empty!')
         }
-        else if (!fee) {
-            setwarning('Consultation Fee is empty!')
+        else if (!jobtitle) {
+            setwarning('Job Title is empty!')
         }
-        else if (!/^\d+$/.test(fee)) {
-            setwarning('Consultation Fee should be contain only number!')
+        else if (!salary) {
+            setwarning('Salary is empty!')
         }
-        else if (fee >= 2147483647)
+        else if (!/^\d+$/.test(salary)) {
+            setwarning('Salary should be contain only number!')
+        }
+        else if (salary >= 2147483647)
         {
-            setwarning('The amount of fee is too big!')
+            setwarning('The amount of expected salary is too big!')
         }
         else if (!date) {
-            setwarning('Consultation Date is empty!')
+            setwarning('Interview Date is empty!')
         }
         else if (!time) {
-            setwarning('Consultation Time is empty!')
+            setwarning('Interview Time is empty!')
         }
         else {
             setwarning(null)
@@ -131,47 +131,47 @@ export default function CreateConRecord({ navigation }) {
 
     return (
         <ScrollView>
-            <Text style={styles.TitleTxt}>New Consultation Record</Text>
+            <Text style={styles.TitleTxt}>New Interview Record</Text>
             <Form style={styles.RecordForm}>
                 {warning && <Text style={styles.WarningTxt}>{warning}</Text>}
                 <Item style={styles.RecordFormItem} >
-                    <Label style={styles.ItemLabel}>Doctor Name</Label>
+                    <Label style={styles.ItemLabel}>Company Name</Label>
                     <Left>
-                        <Input placeholder="Please type..." value={doctor} onChangeText={(txt) => setdoctor(txt)} />
+                        <Input placeholder="Please type..." value={company} onChangeText={(txt) => setcompany(txt)} />
                     </Left>
                     <Right style={styles.ItemRight}></Right>
                 </Item>
                 <Item style={styles.RecordFormItem} >
-                    <Label style={styles.ItemLabel}>Patient Name</Label>
+                    <Label style={styles.ItemLabel}>Interviewer</Label>
                     <Left>
-                        <Input placeholder="Please type..." value={patient} onChangeText={(txt) => setpatient(txt)} />
+                        <Input placeholder="Please type..." value={interviewer} onChangeText={(txt) => setinterviewer(txt)} />
                     </Left>
                     <Right style={styles.ItemRight}></Right>
                 </Item>
                 <Item style={styles.RecordFormItem} >
-                    <Label style={styles.ItemLabel}>Diagnosis</Label>
+                    <Label style={styles.ItemLabel}>Interviewee</Label>
                     <Left>
-                        <Input placeholder="Please type..." value={diagnosis} onChangeText={(txt) => setdiagnosis(txt)} />
+                        <Input placeholder="Please type..." value={interviewee} onChangeText={(txt) => setinterviewee(txt)} />
                     </Left>
                     <Right style={styles.ItemRight}></Right>
                 </Item>
                 <Item style={styles.RecordFormItem} >
-                    <Label style={styles.ItemLabel}>Medication</Label>
+                    <Label style={styles.ItemLabel}>Job Title</Label>
                     <Left>
-                        <Input placeholder="Please type..." value={medication} onChangeText={(txt) => setmedication(txt)} />
+                        <Input placeholder="Please type..." value={jobtitle} onChangeText={(txt) => setjobtitle(txt)} />
                     </Left>
                     <Right style={styles.ItemRight}></Right>
                 </Item>
                 <Item style={styles.RecordFormItem} >
-                    <Label style={styles.ItemLabel}>Consultation Fee</Label>
+                    <Label style={styles.ItemLabel}>Expected Salary</Label>
                     <Left>
-                        <Input placeholder="Please type..." value={fee} onChangeText={(txt) => setfee(txt)} />
+                        <Input placeholder="Please type..." value={salary} onChangeText={(txt) => setsalary(txt)} />
                     </Left>
                     <Right style={styles.ItemRight}></Right>
                 </Item>
                 <Item style={styles.RecordFormItem} >
 
-                    <Label style={styles.ItemLabel}>Consultation Date</Label>
+                    <Label style={styles.ItemLabel}>Interview Date</Label>
                     <Left>
                         <Input placeholder="" value={displayDate} disabled={true} />
                     </Left>
@@ -182,7 +182,7 @@ export default function CreateConRecord({ navigation }) {
                     </Right>
                 </Item>
                 <Item style={styles.RecordFormItem} >
-                    <Label style={styles.ItemLabel}>Consultation Time</Label>
+                    <Label style={styles.ItemLabel}>Interview Time</Label>
                     <Left>
                         <Input placeholder="" value={displayTime} disabled={true} />
                     </Left>
@@ -191,13 +191,6 @@ export default function CreateConRecord({ navigation }) {
                             <Text style={styles.ChooseTxt}>Choose</Text>
                         </TouchableOpacity>
                     </Right>
-                </Item>
-                <Item style={styles.RecordFormItem_CB} >
-                    <Label style={styles.ItemLabel}>Follow Up</Label>
-                    <Left>
-                        <CheckBox checked={followup} onPress={() => setfollowup(!followup)} />
-                    </Left>
-                    <Right style={styles.ItemRight}></Right>
                 </Item>
                 <Item style={styles.RecordFormItem} >
                     <Button block style={styles.SubmitBtn}

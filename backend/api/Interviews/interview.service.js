@@ -3,8 +3,8 @@ const pool = require('../../Config/database')
 module.exports = {
     CreateRecord: async (data, callBack) => {
         try {
-            var query = `INSERT INTO conRecord(userid, doctor, patient, diagnosis, medication, fee, con_datetime, follow_up, create_time) 
-                     VALUES ('${data.userid}', N'${data.doctor}', N'${data.patient}', N'${data.diagnosis}', N'${data.medication}', '${data.fee}', '${data.con_datetime}', '${data.follow_up}', CURDATE())`
+            var query = `INSERT INTO Interview(userid, company, interviewer, interviewee, job_title, expected_salary, interview_date, create_time) 
+                     VALUES ('${data.userid}', N'${data.company}', N'${data.interviewer}', N'${data.interviewee}', N'${data.jobtitle}', '${data.salary}', '${data.interview_date}', CURDATE())`
             // console.log(query)
             await pool.query(
                 query,
@@ -20,7 +20,7 @@ module.exports = {
     },
     CheckRecordDuplicate: async (data, callBack) => {
         try {
-            var query = `SELECT 1 as record FROM conRecord WHERE userid = '${data.userid}' AND doctor = N'${data.doctor}' AND con_datetime = '${data.con_datetime}' `;                     
+            var query = `SELECT 1 as record FROM Interview WHERE userid = '${data.userid}' AND ((interviewer = N'${data.interviewer}' AND interview_date = '${data.interview_date}') OR (interviewee = N'${data.interviewee}' AND interview_date = '${data.interview_date}')) `;                     
             await pool.query(
                 query,
                 [],
@@ -35,8 +35,8 @@ module.exports = {
     },
     GetRecordsInRange: async (data, callBack) => {
         try {
-            var query = `SELECT doctor, patient, diagnosis, medication, fee, con_datetime, follow_up FROM conRecord 
-                        WHERE userid = '${data.userid}' AND con_datetime BETWEEN '${data.startdatesql}' AND '${data.enddatesql}'`;                     
+            var query = `SELECT company, interviewer, interviewee, job_title, expected_salary, interview_date FROM Interview 
+                        WHERE userid = '${data.userid}' AND interview_date BETWEEN '${data.startdatesql}' AND '${data.enddatesql}'`;                     
                         
             pool.query(
                 query,

@@ -1,4 +1,4 @@
-const { CreateRecord, CheckRecordDuplicate, GetRecordsInRange } = require("./conRecord.service")
+const { CreateRecord, CheckRecordDuplicate, GetRecordsInRange } = require("./interview.service")
 
 module.exports = {
     CreateRecord: async (req, res) => {
@@ -18,7 +18,7 @@ module.exports = {
             if (results && results.length > 0) {
                 return res.json({
                     success: false,
-                    message: "Consultation already exists on the specified time!"
+                    message: "Interview already exists on the specified time!"
                 });
             }
             else {
@@ -33,7 +33,7 @@ module.exports = {
                     else {
                         return res.status(200).json({
                             success: true,
-                            message: "Consultation Record is created",
+                            message: "Interview Record is created",
                             //data: results
                         })
                     }
